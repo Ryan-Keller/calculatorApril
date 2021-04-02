@@ -30,7 +30,7 @@ html {
     padding-left: 10px;
 }
 
-button{
+button {
     height: 60px;
     background-color: #fff;
     border-radius: 3px;
@@ -67,8 +67,23 @@ button:hover {
     background-color: #2e86c0;
     border-color: #337cac;
     color: #fff;
+    grid-row-start: 2;
+    grid-row-end: 6;
+    height: 100%;
+    grid-column-start: 4;
+    grid-column-end: 5;
+
+
 }
 
-.equal-sign:hover{
+.equal-sign:hover {
     background-color: #4e9ed4;
+}
+
+.calculator-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+
 }
