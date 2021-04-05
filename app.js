@@ -17,6 +17,11 @@ function inputDigit(digit){
 }
 
 function inputDecimal(dot){
+    if (calculator.waitingForSecondOperand === true) {
+        calculator.displayValue = '0.'
+        calculator.waitingForSecondOperand = false
+        return
+    }
     if(!calculator.displayValue.includes(dot)){
         calculator.displayValue += dot
 
@@ -37,7 +42,7 @@ function handleOperator(nextOperator){
 
     }else if(operator){
         const result = calculate(firstOperand, inputValue, operator)
-        calculator.displayValue = String(result)
+        calculator.displayValue = `${parseFloat(result.toFixed(7))}`
         calculator.firstOperand = result
     }
 
@@ -61,6 +66,14 @@ function calculate(firstOperand, secondOperand, operator) {
     return secondOperand
 }
 
+function resetCalculator(){
+    calculator.displayValue = "0"
+    calculator.firstOperand = null
+    calculator.waitingForSecondOperand = false
+    calculator.operator = null
+    console.log(calculator);
+}
+
 console.log(calculator);
 
 function updateDisplay(){
@@ -73,9 +86,34 @@ updateDisplay();
 const keys = document.querySelector('.calculator-keys')
 keys.addEventListener('click', (event) =>{
     const {target} = event;
+    const {value} = target
     if(!target.matches('button')){
         return
     }
+
+    switch(value){
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '=':
+            handleOperator(value)
+            break;
+        case '.':
+            inputDecimal(value)
+            break;
+        case 'all-clear':
+            resetCalculator()
+            break;
+        default:
+            if(Number.isInteger(parseFloat(value))){
+                inputDigit(value)
+            }
+
+    }
+    updateDisplay()
+
+    /*
     if(target.classList.contains('operator')){
         handleOperator(target.value)
         updateDisplay()
@@ -87,9 +125,11 @@ keys.addEventListener('click', (event) =>{
         return;
     }
     if(target.classList.contains('all-clear')){
-        console.log('clear', target.value);
+        resetCalculator()
+        updateDisplay()
+        return
     }
     inputDigit(target.value);
     updateDisplay();
-
+*/
 })
